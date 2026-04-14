@@ -763,6 +763,12 @@ sensor:
     device_class: power
     state_class: measurement
     value_type: U_WORD
+    on_value:
+      then:
+        - lambda: |-
+            id(inverter_esphome_pv_total).publish_state(
+              id(inverter_esphome_pv1_power).state + id(inverter_esphome_pv2_power).state
+            );
 
   - platform: modbus_controller            # 109 PV1 Voltage
     modbus_controller_id: inverter
@@ -805,6 +811,12 @@ sensor:
     device_class: power
     state_class: measurement
     value_type: U_WORD
+    on_value:
+      then:
+        - lambda: |-
+            id(inverter_esphome_pv_total).publish_state(
+              id(inverter_esphome_pv1_power).state + id(inverter_esphome_pv2_power).state
+            );
 
   - platform: modbus_controller            # 111 PV2 Voltage
     modbus_controller_id: inverter
@@ -887,9 +899,9 @@ sensor:
     accuracy_decimals: 0
     device_class: power
     state_class: measurement
-    update_interval: 5s
-    lambda: |-
-      return (id(inverter_esphome_pv1_power).state + id(inverter_esphome_pv2_power).state);
+    update_interval: never
+ #   lambda: |-
+ #     return (id(inverter_esphome_pv1_power).state + id(inverter_esphome_pv2_power).state);
  
     
   #- platform: template                     # Sum of PV1, PV2 and PV3 to get total PV Power
